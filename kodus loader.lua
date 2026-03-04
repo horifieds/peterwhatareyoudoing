@@ -706,6 +706,82 @@
 						Name = "" 
 					})
 					
+					-- Background blur effect
+					items.blur_background = library:create("Frame", {
+						Parent = items.sgui,
+						Name = "",
+						Size = dim2(1, 0, 1, 0),
+						Position = dim2(0, 0, 0, 0),
+						BackgroundColor3 = rgb(0, 0, 0),
+						BackgroundTransparency = 0.3,
+						BorderSizePixel = 0,
+						ZIndex = -1,
+						Visible = true
+					})
+					
+					local blur = Instance.new("BlurEffect")
+					blur.Size = 10
+					blur.Enabled = true
+					blur.Parent = lighting
+					
+					-- Rain effect container
+					items.rain_holder = library:create("Frame", {
+						Parent = items.sgui,
+						Name = "",
+						Size = dim2(1, 0, 1, 0),
+						Position = dim2(0, 0, 0, 0),
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						ZIndex = 0,
+						Visible = true
+					})
+					
+					-- Create rain drops
+					local rain_drops = {}
+					for i = 1, 50 do
+						local drop = library:create("Frame", {
+							Parent = items.rain_holder,
+							Name = "",
+							Size = dim2(0, 2, 0, random(10, 20)),
+							Position = dim2(random(0, 100) / 100, 0, random(-10, 0) / 100, 0),
+							BackgroundColor3 = rgb(180, 180, 200),
+							BackgroundTransparency = 0.7,
+							BorderSizePixel = 0
+						})
+						
+						rain_drops[i] = drop
+						
+						-- Animate rain drop
+						task.spawn(function()
+							while true do
+								if not items.sgui.Enabled or not items.rain_holder.Visible then
+									task.wait(0.1)
+									continue
+								end
+								
+								local start_y = random(-20, 0) / 100
+								drop.Position = dim2(random(0, 100) / 100, 0, start_y, 0)
+								
+								local tween_info = TweenInfo.new(
+									random(20, 40) / 10,
+									Enum.EasingStyle.Linear,
+									Enum.EasingDirection.In
+								)
+								
+								local tween = tween_service:Create(drop, tween_info, {
+									Position = dim2(drop.Position.X.Scale, 0, 1.1, 0)
+								})
+								
+								tween:Play()
+								tween.Completed:Wait()
+							end
+						end)
+					end
+					
+					-- Store blur reference to remove later
+					items.blur_effect = blur
+					items.rain_drops = rain_drops
+					
 					items.main_holder = library:create("Frame", {
 						Parent = items.sgui,
 						Name = "",
@@ -958,6 +1034,11 @@
 
 			items.sgui:GetPropertyChangedSignal("Enabled"):Connect(function()
 				items.Icon.ImageColor3 = items.sgui.Enabled and themes.preset.accent or themes.preset.inline
+				items.blur_background.Visible = items.sgui.Enabled
+				items.rain_holder.Visible = items.sgui.Enabled
+				if items.blur_effect then
+					items.blur_effect.Enabled = items.sgui.Enabled
+				end
 			end)
 
 			items.button.MouseButton1Click:Connect(function()
