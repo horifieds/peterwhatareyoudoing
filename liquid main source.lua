@@ -108,14 +108,14 @@
 
 	local themes = {
 		preset = {
-			["outline"] = hex("#050505"), -- 
-			["inline"] = hex("#0a0a0a"), --
-			["accent"] = hex("#ffffff"), --
-			["high_contrast"] = hex("#0a0a0a"),
-			["low_contrast"] = hex("#050505"),
-			["text"] = hex("#B4B4B4"),
+			["outline"] = hex("#0a0e12"), -- dark with blue tint
+			["inline"] = hex("#151b21"), -- slightly lighter dark blue
+			["accent"] = hex("#87ceeb"), -- sky baby blue
+			["high_contrast"] = hex("#1a2129"),
+			["low_contrast"] = hex("#0f1419"),
+			["text"] = hex("#b8d4e8"), -- light blue-tinted text
 			["text_outline"] = rgb(0, 0, 0),
-			["glow"] = hex("#000000"), 
+			["glow"] = hex("#87ceeb"), -- sky baby blue glow
 		},
 
 		utility = {
