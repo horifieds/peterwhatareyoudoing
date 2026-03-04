@@ -888,81 +888,13 @@
 					}) library:apply_theme(items.glow, "glow", "ImageColor3") 
 				-- 
 				
-				-- Button
-					items.button = library:create("TextButton", {
-						Parent = library.dock_holder,
-						Name = "",
-						TextColor3 = rgb(0, 0, 0),
-						BorderColor3 = rgb(0, 0, 0),
-						Text = "",
-						Size = dim2(0, 25, 0, 25),
-						BorderSizePixel = 0,
-						TextSize = 14,
-						BackgroundColor3 = themes.preset.inline
-					})
-					
-					local button_inline = library:create("Frame", {
-						Parent = items.button,
-						Name = "",
-						Position = dim2(0, 1, 0, 1),
-						BorderColor3 = rgb(0, 0, 0),
-						Size = dim2(1, -2, 1, -2),
-						BorderSizePixel = 0,
-						BackgroundColor3 = themes.preset.outline
-					}) library:apply_theme(button_inline, "outline", "BackgroundColor3") 
-					
-					local button_inline = library:create("Frame", {
-						Parent = button_inline,
-						Name = "",
-						Position = dim2(0, 1, 0, 1),
-						BorderColor3 = rgb(0, 0, 0),
-						Size = dim2(1, -2, 1, -2),
-						BorderSizePixel = 0,
-						BackgroundColor3 = rgb(255, 255, 255)
-					}) library:apply_theme(button_inline, "inline", "BackgroundColor3")
-					
-					local UIGradient = library:create("UIGradient", {
-						Parent = button_inline,
-						Name = "",
-						Rotation = 90,
-						Color = rgbseq{
-							rgbkey(0, rgb(35, 35, 47)),
-							rgbkey(1, rgb(41, 41, 55))
-						}
-					}) library:apply_theme(UIGradient, "contrast", "Color") 
-					
-					items.Icon = library:create("ImageLabel", {
-						Parent = button_inline,
-						Name = "",
-						ImageColor3 = themes.preset.accent,
-						Image = cfg.image,
-						BackgroundTransparency = 1,
-						BorderColor3 = rgb(0, 0, 0),
-						Size = dim2(1, 0, 1, 0),
-						BorderSizePixel = 0,
-						BackgroundColor3 = rgb(255, 255, 255)
-					}) library:apply_theme(items.Icon, "accent", "ImageColor3") library:apply_theme(items.Icon, "inline", "ImageColor3") 
-					
-					local UIPadding = library:create("UIPadding", {
-						Parent = button_inline,
-						Name = "",
-						PaddingTop = dim(0, 4),
-						PaddingBottom = dim(0, 4),
-						PaddingRight = dim(0, 4),
-						PaddingLeft = dim(0, 4)
-					})
+				-- Removed: Button (dock widget removed)
 				-- 
 
-				library:tool_tip({name = cfg.name, path = items.button})
+				library:tool_tip({name = cfg.name, path = items.main_holder})
 			end 
 
-			items.sgui:GetPropertyChangedSignal("Enabled"):Connect(function()
-				items.Icon.ImageColor3 = items.sgui.Enabled and themes.preset.accent or themes.preset.inline
-			end)
-
-			items.button.MouseButton1Click:Connect(function()
-				items.sgui.Enabled = not items.sgui.Enabled
-			end)
+			-- Removed: button visibility logic (dock widget removed)
 			
 			return setmetatable(cfg, library)
 		end 
@@ -1298,8 +1230,6 @@
 
 				library:tween(blur, {Size = bool and (flags["Blur Size"] or 15) or 0})
 
-				dock_outline.Visible = bool;
-
 				sgui.Enabled = true
 				notif_holder.Enabled = true
 				tooltip_sgui.Enabled = true
@@ -1316,99 +1246,7 @@
 				end
 			end 
 
-			-- dock init
-				dock_outline = library:create("Frame", {
-					Parent = sgui,
-					Name = "",
-					Visible = true,
-					BorderColor3 = rgb(0, 0, 0),
-					AnchorPoint = vec2(0.5, 0),
-					Position = dim2(0.5, 0, 0, 20),
-					Size = dim2(0, 157, 0, 39),
-					BorderSizePixel = 0,
-					BackgroundColor3 = themes.preset.outline
-				}); 
-
-				library:apply_theme(dock_outline, "outline", "BackgroundColor3"); 
-				dock_outline.Position = dim2(0, dock_outline.AbsolutePosition.X, 0, dock_outline.AbsolutePosition.Y); 
-				dock_outline.AnchorPoint = vec2(0, 0); 
-				library:draggify(dock_outline);
-
-				local dock_inline = library:create("Frame", {
-					Parent = dock_outline,
-					Name = "",
-					Position = dim2(0, 1, 0, 1),
-					BorderColor3 = rgb(0, 0, 0),
-					Size = dim2(1, -2, 1, -2),
-					BorderSizePixel = 0,
-					BackgroundColor3 = themes.preset.inline
-				}) library:apply_theme(dock_inline, "inline", "BackgroundColor3") 
-				
-				local dock_holder = library:create("Frame", {
-					Parent = dock_inline,
-					Name = "",
-					Size = dim2(1, -2, 1, -2),
-					Position = dim2(0, 1, 0, 1),
-					BorderColor3 = themes.preset.outline,
-					BorderSizePixel = 0,
-					BackgroundColor3 = rgb(255, 255, 255)
-				}) library:apply_theme(dock_holder, "outline", "BackgroundColor3") 
-				
-				local accent = library:create("Frame", {
-					Parent = dock_holder,
-					Name = "",
-					Size = dim2(1, 0, 0, 2),
-					BorderColor3 = rgb(0, 0, 0),
-					BorderSizePixel = 0,
-					BackgroundColor3 = themes.preset.accent
-				}) library:apply_theme(accent, "accent", "BackgroundColor3") 
-				
-				local UIGradient = library:create("UIGradient", {
-					Parent = accent,
-					Name = "",
-					Rotation = 90,
-					Color = rgbseq{
-					rgbkey(0, rgb(255, 255, 255)),
-					rgbkey(1, rgb(167, 167, 167))
-				}
-				})
-				
-				local button_holder = library:create("Frame", {
-					Parent = dock_holder,
-					Name = "",
-					BackgroundTransparency = 1,
-					Size = dim2(1, 0, 1, 0),
-					BorderColor3 = rgb(0, 0, 0),
-					BorderSizePixel = 0,
-					BackgroundColor3 = rgb(255, 255, 255)
-				}) library.dock_holder = button_holder;
-				
-				local UIListLayout = library:create("UIListLayout", {
-					Parent = button_holder,
-					Name = "",
-					Padding = dim(0, 5),
-					FillDirection = Enum.FillDirection.Horizontal,
-					SortOrder = Enum.SortOrder.LayoutOrder
-				})
-				
-				local UIPadding = library:create("UIPadding", {
-					Parent = button_holder,
-					Name = "",
-					PaddingTop = dim(0, 6),
-					PaddingBottom = dim(0, 4),
-					PaddingRight = dim(0, 4),
-					PaddingLeft = dim(0, 4)
-				})
-						
-				local UIGradient = library:create("UIGradient", {
-					Parent = dock_holder,
-					Name = "",
-					Rotation = 90,
-					Color = rgbseq{
-						rgbkey(0, rgb(41, 41, 55)),
-						rgbkey(1, rgb(35, 35, 47))
-					}
-				}) library:apply_theme(UIGradient, "contrast", "Color") 
+			-- Removed: dock widget
 			-- 
 
 			-- keybind list (position controlled by Keybind List X/Y sliders; not draggable)
@@ -1663,6 +1501,20 @@
 			-- 
 
 			-- Removed: Styles, Configuration, and Playerlist panels
+			
+			-- esp preview
+				local holder = library:panel({
+					name = "ESP Preview", 
+					anchor_point = vec2(0, 0),
+					size = dim2(0, 300, 0, 325),
+					position = dim2(0, items.main_holder.AbsolutePosition.X + items.main_holder.AbsoluteSize.X + 2, 0, items.main_holder.AbsolutePosition.Y),
+					image = "rbxassetid://77684377836328",
+				})  
+				
+				local items = holder.items
+				
+				local column = setmetatable(items, library):column() 
+				window.esp_section = column:section({name = "Main"})
 			--  
 
 			return setmetatable(window, library)
